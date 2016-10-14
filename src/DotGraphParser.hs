@@ -29,13 +29,13 @@ initialState = ParserState
 testParse :: IO ()
 testParse =
   do
-    c <- readFile "orzone_statemachine_0.dot"
+    c <- readFile "statemachine_0.dot"
     putStrLn . show $ runParser parseDotgraph initialState "" c
 
 testPrint :: IO ()
 testPrint =
   do
-    c <- readFile "orzone_statemachine_0.dot"
+    c <- readFile "statemachine_0.dot"
     case runParser (liftA2 (,) parseDotgraph getState) initialState "" c of
       Left _       -> error "Parse error"
       Right (g, s) -> PP.putDoc . PP.pretty .
@@ -148,6 +148,7 @@ secondPass ns g = DotGraph
   , dgStatements = map (transformStatement ns) $ idgStatements g
   }
 
+-- is there a way to avoid having to define this?
 unknownNode :: DotNode
 unknownNode = DotNode "unknown_name" "unknown_label"
 
