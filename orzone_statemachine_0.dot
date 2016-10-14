@@ -1,0 +1,74 @@
+digraph "QStateMachine 2016-okt-14 13:16:48" {
+
+  label="QStateMachine 2016-okt-14 13:16:48"
+  graph [compound=true]
+  node [fontsize=11]
+  edge [fontsize=9]
+
+  initialstate_000002095B1CACE0 [label=""]
+  initialstate_000002095B1CACE0 -> state_000002095DFCC950
+
+  subgraph cluster_state_000002095DFCC950 {
+    label="RootGroup"
+    state_000002095DFCC950 [id=state_000002095DFCC950 label="RootGroup" shape=rect style=rounded]
+
+    subgraph cluster_state_000002095DFCDB70 {
+      label="WindowGroup"
+      state_000002095DFCDB70 [id=state_000002095DFCDB70 label="WindowGroup" shape=rect style=rounded]
+      initialstate_000002095DFCDB70 [label=""]
+      initialstate_000002095DFCDB70 -> state_000002095DF6B2A0
+      state_000002095DF6B380 [id=state_000002095DF6B380 label="ShowMainWindow" shape=rect style=rounded]
+      state_000002095DF6B2A0 [id=state_000002095DF6B2A0 label="ShowSplashScreen" shape=rect style=rounded]
+    }
+
+
+    subgraph cluster_state_000002095DFCD8A0 {
+      label="MainGroup"
+      state_000002095DFCD8A0 [id=state_000002095DFCD8A0 label="MainGroup" shape=rect style=rounded]
+      initialstate_000002095DFCD8A0 [label=""]
+      initialstate_000002095DFCD8A0 -> state_000002095F16FD00
+
+      subgraph cluster_state_000002095DF67E20 {
+        label="ConnectedToServer"
+        state_000002095DF67E20 [id=state_000002095DF67E20 label="ConnectedToServer" shape=rect style=rounded]
+        initialstate_000002095DF67E20 [label=""]
+        initialstate_000002095DF67E20 -> state_000002095DF68280
+
+        subgraph cluster_state_000002095DFCD0D0 {
+          label="ConnectedToControlPanel"
+          state_000002095DFCD0D0 [id=state_000002095DFCD0D0 label="ConnectedToControlPanel" shape=rect style=rounded]
+          initialstate_000002095DFCD0D0 [label=""]
+          initialstate_000002095DFCD0D0 -> state_000002095DF68130
+
+          subgraph cluster_state_000002095DFCC9A0 {
+            label="Ready"
+            state_000002095DFCC9A0 [id=state_000002095DFCC9A0 label="Ready" shape=rect style=rounded]
+            initialstate_000002095DFCC9A0 [label=""]
+            initialstate_000002095DFCC9A0 -> state_000002095DF68750
+            state_000002095DF688A0 [id=state_000002095DF688A0 label="RunningScenario" shape=rect style=rounded]
+            state_000002095DF68750 [id=state_000002095DF68750 label="ReadyToStartScenario" shape=rect style=rounded]
+          }
+
+          state_000002095DF68130 [id=state_000002095DF68130 label="GetControlPanelStatus" shape=rect style=rounded]
+        }
+
+        state_000002095DF68050 [id=state_000002095DF68050 label="NotConnectedToControlPanel" shape=rect style=rounded]
+        state_000002095DF68280 [id=state_000002095DF68280 label="InitRpc" shape=rect style=rounded]
+      }
+
+      state_000002095F16FD00 [id=state_000002095F16FD00 label="PingServer" shape=rect style=rounded]
+    }
+
+  }
+
+  state_000002095DF6B2A0 -> state_000002095DF6B380 [id=transition_000002095DFCD030_000002095DF6B380 label="Signal\nPingServer::onPingFailed()"]
+  state_000002095DF6B2A0 -> state_000002095DF6B380 [id=transition_000002095DFCCD60_000002095DF6B380 label="Signal\nInitRpc::rpcInitialized()"]
+  state_000002095DF6B2A0 -> state_000002095DF6B380 [id=transition_000002095DFCD170_000002095DF6B380 label="Signal\n::loadingFinishedCalled()"]
+  state_000002095DF67E20 -> state_000002095F16FD00 [id=transition_000002095DFCCB30_000002095F16FD00 label="Signal\n::socketDisconnected(QObject*)"]
+  state_000002095DFCD0D0 -> state_000002095DF68050 [id=transition_000002095DFCD080_000002095DF68050 label="Signal\n::controlPanelDisconnected()"]
+  state_000002095DF68130 -> state_000002095DFCC9A0 [id=transition_000002095DFCDA30_000002095DFCC9A0 label="Signal\nGetControlPanelStatus::controlPanelCalibrated()" ltail=cluster_state_000002095DFCC9A0]
+  state_000002095DF68050 -> state_000002095DFCD0D0 [id=transition_000002095DFCD9E0_000002095DFCD0D0 label="Signal\n::controlPanelConnected()" ltail=cluster_state_000002095DFCD0D0]
+  state_000002095DF68280 -> state_000002095DF68050 [id=transition_000002095DFCDCB0_000002095DF68050 label="Signal\nInitRpc::rpcInitialized()"]
+  state_000002095DF68280 -> state_000002095DFCD0D0 [id=transition_000002095DFCD4E0_000002095DFCD0D0 label="Signal\n::controlPanelConnected()" ltail=cluster_state_000002095DFCD0D0]
+  state_000002095F16FD00 -> state_000002095DF67E20 [id=transition_000002095DFA0890_000002095DF67E20 label="ConnectedEvent" ltail=cluster_state_000002095DF67E20]
+}
