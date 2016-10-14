@@ -3,8 +3,8 @@
 
 module DotGraphParser where
 
-import           Control.Applicative (liftA2)
 import           Control.Monad.Identity
+import qualified Data.ByteString.Char8 as BS
 import qualified Data.Text as T
 import           Data.Maybe
 import           Text.Parsec hiding (label)
@@ -26,26 +26,15 @@ initialState = ParserState
   { psNodes = []
   }
 
-testParse :: IO ()
-testParse =
+compile :: BS.ByteString -> Either String String
+compile bs =
   do
-    c <- readFile "statemachine_0.dot"
-    putStrLn . show $ runParser parseDotgraph initialState "" c
-
-testPrint :: IO ()
-testPrint =
-  do
-    c <- readFile "statemachine_0.dot"
-    case runParser (liftA2 (,) parseDotgraph getState) initialState "" c of
-      Left _       -> error "Parse error"
-      Right (g, s) -> PP.putDoc . PP.pretty .
-                      DotGraphPP $ secondPass (psNodes s) g
-
-tests :: IO ()
-tests =
-  do
-    let c = "subgraph cluster_state_0000024F5160D0A0 {label=\"yo\"}"
-    putStrLn . show $ runParser statement initialState "" c
+    case runParser ((,) <$> parseDotgraph
+                        <*> getState) initialState "" (BS.unpack bs) of
+      Left e       -> Left  $ "Parse error: " ++ show e
+      Right (g, s) -> Right $ flip PP.displayS ""
+                            $ PP.renderPretty 1 80 . PP.pretty
+                            . DotGraphPP $ secondPass (psNodes s) g
 
 parseDotgraph :: Parser IntermediateDotGraph
 parseDotgraph = flip (<?>) "Dotgraph" $

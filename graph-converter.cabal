@@ -19,17 +19,19 @@ library
                        DotGraphTypes, PlantUMLPrettyPrinter
   ghc-options:         -Wall
   build-depends:       base >= 4.7 && < 5
+                     , bytestring
                      , mtl
                      , parsec
                      , text
                      , wl-pprint
   default-language:    Haskell2010
 
-executable graph-converter-exe
+executable graph-converter
   hs-source-dirs:      app
   main-is:             Main.hs
   ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
+                     , bytestring
                      , graph-converter
   default-language:    Haskell2010
 
