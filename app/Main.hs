@@ -4,7 +4,7 @@ import qualified Data.ByteString as BS
 import           System.Environment
 import           System.IO
 
-import           DotGraphParser
+import           DotGraphCompiler
 
 main :: IO ()
 main =
@@ -21,4 +21,4 @@ doFile filename = do
   bs <- BS.readFile filename
   case compile bs of
     Left e  -> error e
-    Right s -> putStrLn s
+    Right s -> putStr s

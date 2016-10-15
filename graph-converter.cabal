@@ -15,8 +15,9 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     DotGraphLexer, DotGraphParser, DotGraphIntermediateTypes,
-                       DotGraphTypes, PlantUMLPrettyPrinter
+  exposed-modules:     DotGraphCompiler, DotGraphLexer, DotGraphParser,
+                       DotGraphIntermediateTypes, DotGraphTypes,
+                       PlantUMLPrettyPrinter
   ghc-options:         -Wall
   build-depends:       base >= 4.7 && < 5
                      , bytestring
